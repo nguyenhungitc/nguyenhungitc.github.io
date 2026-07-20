@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#8b4513">
+    <title>Xiangqi Endgame Puzzles Online — Free Chinese Chess Puzzles | ChessONE</title>
+    <meta name="description"
+        content="Free Xiangqi (Chinese chess) endgame puzzles online at ChessONE. Pick a puzzle, play against the engine, save your history and share games on mobile and desktop.">
+    <meta name="keywords"
+        content="xiangqi puzzles, chinese chess endgame, xiangqi endgame, play xiangqi, xiangqi online, chinese chess puzzles, xiangqi engine, free xiangqi, chessone">
+    <meta name="author" content="ChessONE">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://nguyenhungitc.github.io/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ChessONE">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="Xiangqi Endgame Puzzles Online — Free Chinese Chess Puzzles | ChessONE">
+    <meta property="og:description"
+        content="Free Xiangqi endgame puzzles online. Pick a puzzle, play against the engine, save your history and share games.">
+    <meta property="og:url" content="https://nguyenhungitc.github.io/">
+    <meta property="og:image" content="https://nguyenhungitc.github.io/images/board.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Xiangqi Endgame Puzzles Online — Free Chinese Chess Puzzles | ChessONE">
+    <meta name="twitter:description"
+        content="Free Xiangqi endgame puzzles online. Pick a puzzle, play against the engine, save your history and share games.">
+    <meta name="twitter:image" content="https://nguyenhungitc.github.io/images/board.svg">
+
+    <link rel="icon" href="favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ChessONE">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "ChessONE — Xiangqi Endgame Puzzles",
+        "url": "https://nguyenhungitc.github.io/",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web",
+        "inLanguage": "en",
+        "description": "Free Xiangqi endgame puzzles online with many hand-picked puzzles, play against the engine, save your history and share games.",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "VND"
+        }
+    }
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #8b4513;
+            --primary-dark: #5d2e0c;
+            --primary-light: #c97842;
+            --bg: #f4e4c1;
+            --bg-card: #fffaf0;
+            --text: #2d1810;
+            --text-muted: #6b5644;
+            --border: #d4b896;
+            --shadow: 0 2px 8px rgba(93, 46, 12, 0.15);
+            --radius: 12px;
+            --radius-sm: 6px;
+            --red: #c0392b;
+            --black: #2b2b2b;
+            --win: #2e7d32;
+            --draw: #757575;
+            --loss: #c62828;
+            --coord-size: 22px;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(255, 220, 180, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(200, 140, 80, 0.3) 0%, transparent 50%),
+                url(images/background.gif);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 15px;
+            line-height: 1.5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .app-header h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .user-stats {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.1;
+            min-width: 60px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            opacity: 0.85;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.3px;
+        }
+
+        .stat-value .stat-unit {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.75;
+            margin-left: 1px;
+        }
+
+        .home-view {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 14px 40px;
+        }
+
+        .home-head {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .home-head h2 {
+            margin: 0 0 6px;
+            font-size: 24px;
+            color: var(--primary-dark);
+        }
+
+        .home-head p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        @media (max-width: 560px) {
+            .puzzle-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+        }
+
+        .puzzle-cell {
+            background: #d6a85f;
+            border: 1px solid var(--primary-dark);
+            border-radius: var(--radius-sm);
+            padding: 0;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+        }
+
+        .puzzle-cell:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(93, 46, 12, 0.25);
+            border-color: var(--primary-light);
+        }
+
+        .mini-board {
+            width: 100%;
+            display: block;
+        }
+
+        .mini-board svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .home-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .app-main {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 12px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .col-left {
+            order: 2;
+        }
+
+        .col-mid {
+            order: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .col-right {
+            order: 3;
+        }
+
+        @media (min-width: 768px) and (max-width: 979px) {
+            .app-main {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+                align-items: start;
+            }
+
+            .col-mid {
+                grid-column: 1 / -1;
+                order: 1;
+            }
+
+            .col-left {
+                grid-column: 1;
+                order: 2;
+            }
+
+            .col-right {
+                grid-column: 2;
+                order: 3;
+            }
+        }
+
+        @media (min-width: 980px) {
+            .app-main {
+                display: grid;
+                grid-template-columns: 260px minmax(0, 540px) 280px;
+                justify-content: center;
+                gap: 16px;
+                align-items: start;
+            }
+
+            .col-left {
+                grid-column: 1;
+                order: 1;
+            }
+
+            .col-mid {
+                grid-column: 2;
+                order: 2;
+            }
+
+            .col-right {
+                grid-column: 3;
+                order: 3;
+            }
+        }
+
+        .board-with-coords {
+            display: grid;
+            grid-template-columns: var(--coord-size) 1fr;
+            grid-template-rows: 1fr var(--coord-size);
+            gap: 2px;
+            width: 100%;
+            max-width: calc(521px + var(--coord-size) + 2px);
+        }
+
+        .board-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 521 / 577;
+            grid-column: 2;
+            grid-row: 1;
+            min-width: 0;
+        }
+
+        #container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            width: 521px;
+            height: 577px;
+        }
+
+        .coords-files {
+            grid-column: 2;
+            grid-row: 2;
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            user-select: none;
+        }
+
+        .coords-files span {
+            text-align: center;
+            line-height: var(--coord-size);
+        }
+
+        .coords-ranks {
+            grid-column: 1;
+            grid-row: 1;
+            display: grid;
+            grid-template-rows: repeat(10, 1fr);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            user-select: none;
+        }
+
+        .coords-ranks span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .captured-tray {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            min-height: 30px;
+            width: 100%;
+            max-width: calc(521px + var(--coord-size) + 2px);
+            padding: 4px 6px;
+            background: transparent;
+            border-radius: var(--radius-sm);
+        }
+
+        .captured-tray:empty {
+            display: none;
+        }
+
+        .cap-pc {
+            width: 28px;
+            height: 28px;
+            vertical-align: middle;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .puzzle-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .turn-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .turn-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .turn-dot.red {
+            background: var(--red);
+        }
+
+        .turn-dot.black {
+            background: var(--black);
+        }
+
+        .field-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .segmented {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: 1fr;
+            gap: 4px;
+            background: var(--bg);
+            padding: 4px;
+            border-radius: var(--radius-sm);
+        }
+
+        .segmented label {
+            display: block;
+            text-align: center;
+            padding: 9px 4px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .segmented input[type="radio"] {
+            display: none;
+        }
+
+        .segmented input[type="radio"]:checked+label {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 4px rgba(93, 46, 12, 0.3);
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+        }
+
+        .toggle-row label {
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider-toggle {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: var(--border);
+            border-radius: 24px;
+            transition: 0.2s;
+        }
+
+        .slider-toggle::before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .switch input:checked+.slider-toggle {
+            background: var(--primary);
+        }
+
+        .switch input:checked+.slider-toggle::before {
+            transform: translateX(20px);
+        }
+
+        .btn-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 11px 14px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: var(--primary);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn.secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn.secondary:hover {
+            background: var(--bg);
+            color: var(--primary-dark);
+        }
+
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .move-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 10px;
+            font-variant-numeric: tabular-nums;
+            font-size: 14px;
+            max-height: 360px;
+            overflow-y: auto;
+        }
+
+        .move-list .move {
+            white-space: nowrap;
+            color: var(--text);
+        }
+
+        .move-list .move .num {
+            color: var(--text-muted);
+            margin-right: 3px;
+        }
+
+        .move-list .move.active {
+            background: var(--primary);
+            color: #fff;
+            border-radius: 4px;
+            padding: 0 4px;
+        }
+
+        .move-list .move.active .num {
+            color: #fff;
+        }
+
+        .move-empty {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .result-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--primary-dark);
+            color: white;
+            padding: 14px 22px;
+            border-radius: var(--radius);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            font-size: 16px;
+            font-weight: 700;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s, transform 0.25s;
+            z-index: 200;
+        }
+
+        .result-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .result-toast.win {
+            background: var(--win);
+        }
+
+        .result-toast.loss {
+            background: var(--loss);
+        }
+
+        .result-toast.draw {
+            background: var(--draw);
+        }
+
+        .history-card {
+            margin-top: 0;
+        }
+
+        .card-title-action {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .card-title-action:hover {
+            background: var(--bg);
+            color: var(--loss);
+        }
+
+        .history-item {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .history-item:hover {
+            background: var(--bg);
+        }
+
+        .history-item+.history-item {
+            border-top: 1px solid var(--bg);
+        }
+
+        .history-thumb {
+            width: 60px;
+            flex: 0 0 60px;
+        }
+
+        .history-thumb svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .history-meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .history-row1 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2px;
+        }
+
+        .history-result {
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            padding: 1px 8px;
+            border-radius: 8px;
+        }
+
+        .history-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .history-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 2px;
+        }
+
+        .history-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            padding: 4px 6px;
+            border-radius: 4px;
+            line-height: 1;
+        }
+
+        .history-btn:hover {
+            background: var(--border);
+        }
+
+        .history-empty {
+            color: var(--text-muted);
+            font-size: 13px;
+            padding: 6px;
+        }
+
+        .review-note {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .review-note button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .review-nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .nav-btn {
+            padding: 9px 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: white;
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--bg);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 767px) {
+            :root {
+                --coord-size: 18px;
+            }
+
+            .card {
+                padding: 12px 14px;
+            }
+
+            .app-header {
+                padding: 12px 16px;
+            }
+
+            .app-header h1 {
+                font-size: 18px;
+            }
+
+            .user-stats {
+                gap: 18px;
+                margin-top: 8px;
+            }
+
+            .stat-value {
+                font-size: 16px;
+            }
+
+            .stat-label {
+                font-size: 9px;
+            }
+
+            .app-main {
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .coords-files,
+            .coords-ranks {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="app-header">
+        <h1>ChessONE — Xiangqi Endgame Puzzles</h1>
+        <div class="user-stats" id="userStats">
+            <div class="stat-item" title="Your rating">
+                <span class="stat-label">Rating</span>
+                <span class="stat-value" id="statElo">&mdash;</span>
+            </div>
+            <div class="stat-item" title="Games finished (W/D/L)">
+                <span class="stat-label">Games</span>
+                <span class="stat-value" id="statGames">&mdash;</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="home-view" id="homeView">
+        <div class="home-head">
+            <h2>Endgame Puzzles</h2>
+            <p>Pick a board to start solving.</p>
+        </div>
+        <div class="puzzle-grid" id="puzzleGrid"></div>
+        <div class="home-actions">
+            <button class="btn" id="btnLoadMore">Load more</button>
+        </div>
+    </section>
+
+    <main class="app-main" id="playView" style="display:none">
+        <div class="col col-left">
+            <div class="card">
+                <div class="puzzle-name" id="puzzleName">Puzzle</div>
+                <div class="turn-row">
+                    <span class="turn-dot" id="turnDot"></span>
+                    <span id="turnText">Red to move</span>
+                </div>
+                <div class="review-note" id="reviewNote" style="display:none"></div>
+                <div class="review-nav" id="reviewNav" style="display:none">
+                    <button class="nav-btn" id="navFirst" title="First">&laquo;</button>
+                    <button class="nav-btn" id="navPrev" title="Previous">&lsaquo;</button>
+                    <button class="nav-btn" id="navNext" title="Next">&rsaquo;</button>
+                    <button class="nav-btn" id="navLast" title="Last">&raquo;</button>
+                </div>
+                <div id="sideChooser">
+                    <div class="field-label">You play</div>
+                    <div class="segmented">
+                        <input type="radio" name="youPlay" id="playRed" value="0">
+                        <label for="playRed">Red</label>
+                        <input type="radio" name="youPlay" id="playBlack" value="1">
+                        <label for="playBlack">Black</label>
+                    </div>
+                </div>
+                <div class="btn-stack">
+                    <div class="btn-row" id="puzzleBtns">
+                        <button class="btn secondary" id="btnReplay">↻ Replay</button>
+                        <button class="btn secondary" id="btnNext">Next puzzle</button>
+                    </div>
+                    <button class="btn" id="btnHome">Back to home</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Settings</div>
+                <div class="toggle-row">
+                    <label for="chkSound">Sound</label>
+                    <label class="switch">
+                        <input type="checkbox" id="chkSound">
+                        <span class="slider-toggle"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col col-mid">
+            <div class="board-with-coords" id="boardWithCoords">
+                <div class="coords-ranks" id="coordsRanks"></div>
+                <div class="board-wrapper">
+                    <div id="container"></div>
+                </div>
+                <div class="coords-files" id="coordsFiles"></div>
+            </div>
+            <div id="capturedTray" class="captured-tray"></div>
+        </div>
+
+        <div class="col col-right">
+            <div class="card">
+                <div class="card-title">Move history</div>
+                <div class="move-list" id="moveList"></div>
+            </div>
+            <div class="card history-card" id="historyCard" style="display:none">
+                <div class="card-title">
+                    <span>Saved games</span>
+                    <button class="card-title-action" id="btnClearHistory">Clear all</button>
+                </div>
+                <div id="historyList"></div>
+            </div>
+        </div>
+    </main>
+
+    <div class="result-toast" id="resultToast"></div>
+
+    <script>
+        (function () {
+            const BOARD_W = 521, BOARD_H = 577;
+            function renderCoords() {
+                const coordsFiles = document.getElementById('coordsFiles');
+                const coordsRanks = document.getElementById('coordsRanks');
+                if (!coordsFiles || !coordsRanks) return;
+                const flipped = typeof board !== 'undefined' && board.computer === 0;
+                const files = flipped ? [9, 8, 7, 6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                coordsFiles.innerHTML = files.map((f) => `<span>${f}</span>`).join('');
+                const ranks = flipped ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] : [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+                coordsRanks.innerHTML = ranks.map((r) => `<span>${r}</span>`).join('');
+            }
+            window.renderCoords = renderCoords;
+            window.onBoardRestart = renderCoords;
+            setTimeout(renderCoords, 0);
+        })();
+    </script>
+
+    <script src="engine.js"></script>
+    <script src="xiangqi.js"></script>
+</body>
+
+</html>

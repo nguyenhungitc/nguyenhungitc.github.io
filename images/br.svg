@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="57" height="57" viewBox="0 0 57 57">
+<defs><radialGradient id="d" cx="0.38" cy="0.32" r="0.85">
+<stop offset="0" stop-color="#fdf6e3"/><stop offset="1" stop-color="#e8d5a8"/>
+</radialGradient></defs>
+<circle cx="29.2" cy="29.8" r="25.5" fill="rgba(0,0,0,0.25)"/>
+<circle cx="28.5" cy="28.5" r="25.5" fill="url(#d)" stroke="#000000" stroke-width="1.6"/>
+<circle cx="28.5" cy="28.5" r="21.8" fill="none" stroke="#26221e" stroke-width="1.8"/>
+<g fill="#26221e"><path transform="matrix(0.03092 0 0 -0.03092 13.026 40.248)" d="M153 586V174H171C220 174 271 200 271 212V242H435V122H33L41 94H435V-89H459C505 -89 556 -65 556 -54V94H939C954 94 965 99 968 110C919 151 841 208 841 208L771 122H556V242H725V202H745C786 202 843 228 844 236V538C865 542 878 551 885 559L770 647L715 586H556V688H910C925 688 936 693 939 704C891 744 812 801 812 801L743 716H556V804C583 808 591 819 593 833L435 849V716H65L73 688H435V586H279L153 636ZM435 558V432H271V558ZM556 558H725V432H556ZM435 271H271V403H435ZM556 271V403H725V271Z"/></g>
+</svg>
